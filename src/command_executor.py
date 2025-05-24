@@ -12,9 +12,10 @@ class CommandExecutor:
         if command_name == "fist":
             pyautogui.press('pause')
             self.play_state = False
-        elif command_name == "open_hand" and self.play_state == False:
-            pyautogui.press('play')
-            self.play_state = True
+        elif command_name == "open_hand":
+            if self.play_state == False:
+                pyautogui.press('play')
+                self.play_state = True
 
         else:
             print(f"Unknown command: {command_name}")
