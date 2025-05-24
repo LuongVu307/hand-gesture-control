@@ -35,7 +35,7 @@ def main():
         cv2.imshow("Hand Gesture Control", frame)
         
 
-        if cv2.waitKey(1) & 0xFF == 27:  # Press ESC to quit
+        if cv2.waitKey(200) & 0xFF == 27:  # Press ESC to quit
             break
 
         frame_count += 1
