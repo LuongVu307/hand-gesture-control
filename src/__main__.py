@@ -19,20 +19,18 @@ def main():
         if not ret:
             break
 
-        # Process only every 2nd frame (skip alternate frames)
-        if frame_count % 2 == 0:
-            hands = detector.detect_hands(frame)
-
-            if hands:
-                # For simplicity, recognize gesture on first hand detected
-                gesture = recognize_gesture(hands[0])
-                print(f"Gesture detected: {gesture}")
-                executor.execute_command(gesture)
-        else:
-            hands = None
+        hands = detector.detect_hands(frame)
+        
+        if hands:
+            # For simplicity, recognize gesture on first hand detected
+            gesture = recognize_gesture(hands[0])
+            print(f"Gesture detected: {gesture}")
+            executor.execute_command(gesture)
 
         frame = detector.draw_hands(frame, hands)
+        detector.draw_hands(frame, hands)        
         cv2.imshow("Hand Gesture Control", frame)
+        
 
         if cv2.waitKey(1) & 0xFF == 27:  # Press ESC to quit
             break
