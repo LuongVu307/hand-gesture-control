@@ -1,6 +1,6 @@
 import cv2
 from .camera import HandDetector
-from .gesture_recognition import recognize_gesture
+from .gesture_recognition import GestureDetector
 from .command_executor import CommandExecutor
 
 def main():
@@ -9,8 +9,10 @@ def main():
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
-    detector = HandDetector()
+    hand_detector = HandDetector()
     executor = CommandExecutor()
+    gesture_detector = GestureDetector()
+
 
     frame_count = 0
 
@@ -19,16 +21,17 @@ def main():
         if not ret:
             break
 
-        hands = detector.detect_hands(frame)
-        
+        hands = hand_detector.detect_hands(frame)
+
         if hands:
             # For simplicity, recognize gesture on first hand detected
-            gesture = recognize_gesture(hands[0])
+            gesture_detector.update(hands[0])
+            gesture = gesture_detector.get_gesture()
             print(f"Gesture detected: {gesture}")
             executor.execute_command(gesture)
 
-        frame = detector.draw_hands(frame, hands)
-        detector.draw_hands(frame, hands)        
+        frame = hand_detector.draw_hands(frame, hands)
+        hand_detector.draw_hands(frame, hands)        
         cv2.imshow("Hand Gesture Control", frame)
         
 
