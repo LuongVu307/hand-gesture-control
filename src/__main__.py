@@ -1,7 +1,7 @@
 import cv2
-from camera import HandDetector
-from gesture_recognition import recognize_gesture
-from command_executor import CommandExecutor
+from .camera import HandDetector
+from .gesture_recognition import recognize_gesture
+from .command_executor import CommandExecutor
 
 def main():
     cap = cv2.VideoCapture(0)  # Open default camera
