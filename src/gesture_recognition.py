@@ -50,7 +50,7 @@ class GestureDetector:
         finger_states = self.get_fingers_state()
         print(finger_states.values())
         
-        if len(set(finger_states.values())) and "fully_open" in finger_states.values():
+        if (len(set(finger_states.values()))==1) and ("fully_open" in finger_states.values()):
             self.hand_state = "fully_open_hand"
         else:
             self.hand_state = "close_hand"
