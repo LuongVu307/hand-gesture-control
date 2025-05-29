@@ -23,7 +23,10 @@ class Hand:
             if finger_type in self.fingers:
                 # Assuming each Finger object has an update_landmarks method or similar
                 self.fingers[finger_type].update(landmarks)
-
+    
+    def update(self, landmarks):
+        self.wrist = landmarks["wrist"]
+        self.fingers = landmarks["fingers"]
 
 
 class Finger:
