@@ -28,9 +28,9 @@ def main():
             # For simplicity, recognize gesture on first hand detected
             gesture_detector.update(landmarks)
 
-            # gesture = gesture_detector.get_gesture()
-            # print(f"Gesture detected: {gesture}")
-            # executor.execute_command(gesture)
+            gesture = gesture_detector.get_gesture()
+            print(f"Gesture detected: {gesture}")
+            executor.execute_command(gesture)
 
 
         frame = hand_detector.draw_hands(frame)
