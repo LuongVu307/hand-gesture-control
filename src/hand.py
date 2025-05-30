@@ -78,3 +78,10 @@ class Finger:
     @property
     def joints(self):
         return [self.base, self.first, self.second, self.tip]
+    
+    @property
+    def state(self):
+        if self.tip.y < self.base.y:
+            return "open"
+        else:
+            return "close"
