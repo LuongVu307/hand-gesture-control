@@ -3,7 +3,7 @@ from .utils import is_audio_playing
 
 class CommandExecutor:
     def __init__(self):
-        self.play_state = is_audio_playing()
+        self.playing = is_audio_playing()
 
     def execute_command(self, command_name):
         """
@@ -11,13 +11,13 @@ class CommandExecutor:
         Extend this as you add more gestures.
         """
         
-        if command_name == "close_hand":
-            if self.play_state ==False:
+        if command_name == "close":
+            if self.playing ==False:
                 pyautogui.press('playpause')
-                self.play_state = True
-        elif command_name == "fully_open_hand":
-            if self.play_state == True:
+                self.playing = True
+        elif command_name == "open":
+            if self.playing == True:
                 pyautogui.press('playpause')
-                self.play_state = False
+                self.playing = False
         else:
             print(f"Unknown command: {command_name}")

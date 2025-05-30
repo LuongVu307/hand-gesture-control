@@ -21,17 +21,19 @@ def main():
         if not ret:
             break
 
-        hands = hand_detector.detect_hands(frame)
+        landmarks = hand_detector.detect_hands(frame)
 
-        if hands:
+        if landmarks:
+            
             # For simplicity, recognize gesture on first hand detected
-            gesture_detector.update(hands[0])
+            gesture_detector.update(landmarks)
+
             gesture = gesture_detector.get_gesture()
             print(f"Gesture detected: {gesture}")
             executor.execute_command(gesture)
 
-        frame = hand_detector.draw_hands(frame, hands)
-        hand_detector.draw_hands(frame, hands)        
+
+        frame = hand_detector.draw_hands(frame)
         cv2.imshow("Hand Gesture Control", frame)
         
 

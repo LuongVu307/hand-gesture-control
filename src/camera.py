@@ -12,25 +12,31 @@ class HandDetector:
         self.mp_draw = mp.solutions.drawing_utils
 
     def detect_hands(self, frame):
-        """
-        Detects hands in the frame.
-        Returns: list of hand landmarks if detected, else None
-        """
         image_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         results = self.hands.process(image_rgb)
-
+        
+        self.current_multi_hand_landmarks = results.multi_hand_landmarks  # save for drawing
+        
         if results.multi_hand_landmarks:
             hands_landmarks = []
             for hand_landmarks in results.multi_hand_landmarks:
-                hands_landmarks.append(hand_landmarks)
+                landmarks = hand_landmarks.landmark
+                hand_dict = {
+                    "wrist": landmarks[0],
+                    "fingers": {
+                        "thumb": landmarks[1:5],
+                        "index": landmarks[5:9],
+                        "middle": landmarks[9:13],
+                        "ring": landmarks[13:17],
+                        "pinky": landmarks[17:21],
+                    }
+                }
+                hands_landmarks.append(hand_dict)
             return hands_landmarks
         return None
 
-    def draw_hands(self, frame, hand_landmarks_list):
-        """
-        Draws hand landmarks on the frame.
-        """
-        if hand_landmarks_list:
-            for hand_landmarks in hand_landmarks_list:
+    def draw_hands(self, frame):
+        if self.current_multi_hand_landmarks:
+            for hand_landmarks in self.current_multi_hand_landmarks:
                 self.mp_draw.draw_landmarks(frame, hand_landmarks, self.mp_hands.HAND_CONNECTIONS)
         return frame
