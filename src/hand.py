@@ -46,7 +46,13 @@ class Hand:
 
 
 class Finger:
-    def __init__(self, type):
+    VALID_TYPES = ["thumb", "index", "middle", "ring", "pinky"]
+    JOIN_NAMES = ["base", "first", "second", "tip"]
+
+
+    def __init__(self, type="null"):
+        if type not in self.VALID_TYPES:
+            raise ValueError("Invalid finger type")
         self.type = type
         self.base, self.first, self.second, self.tip = None, None, None, None
 
@@ -54,14 +60,16 @@ class Finger:
         self.base, self.first,self.second, self.tip = landmarks
 
     def flip_horizontal(self, wrist_x):
-        for joint_name in ["base", "first", "second", "tip"]:
+        for joint_name in self.JOIN_NAMES:
             joint = getattr(self, joint_name)
-            joint.x = 2 * wrist_x - joint.x
+            if joint is not None:
+                joint.x = 2 * wrist_x - joint.x
 
     def flip_vertical(self, wrist_y):
-        for joint_name in ["base", "first", "second", "tip"]:
+        for joint_name in self.JOIN_NAMES:
             joint = getattr(self, joint_name)
-            joint.y = 2 * wrist_y - joint.y
+            if joint is not None:
+                joint.y = 2 * wrist_y - joint.y
 
     @property
     def x(self):
