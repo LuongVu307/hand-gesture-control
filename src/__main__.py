@@ -3,6 +3,7 @@ from .gesture_recognition import GestureDetector
 from .command_executor import CommandExecutor
 from .camera import Camera
 
+
 def main():
     camera = Camera(width=640, height=480)  # Uses OpenCV internally
 
@@ -34,6 +35,7 @@ def main():
         frame_count += 1
 
     camera.release()
+
 
 if __name__ == "__main__":
     main()

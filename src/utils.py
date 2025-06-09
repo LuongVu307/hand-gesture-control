@@ -1,6 +1,7 @@
 # utils.py
 from pycaw.pycaw import AudioUtilities
 
+
 def is_audio_playing():
     sessions = AudioUtilities.GetAllSessions()
     for session in sessions:
