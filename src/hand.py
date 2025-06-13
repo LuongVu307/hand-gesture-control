@@ -48,7 +48,6 @@ class Hand:
         else:
             self.upsidedown = False
 
-
         # Flip horizontally if thumb is to the left of pinky
         # The palm is not facing the camera)
         if self.thumb.x < self.pinky.x:
