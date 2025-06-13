@@ -9,6 +9,7 @@ class Hand:
             Finger("pinky"),
         )
         self.wrist = None
+        self.flipped, self.upsidedown = True, True
 
     @property
     def fingers(self):
@@ -43,6 +44,10 @@ class Hand:
             # wrist.y unchanged
             for finger in self.fingers.values():
                 finger.flip_vertical(self.wrist.y)
+            self.upsidedown = True
+        else:
+            self.upsidedown = False
+
 
         # Flip horizontally if thumb is to the left of pinky
         # The palm is not facing the camera)
@@ -50,6 +55,9 @@ class Hand:
             # wrist.x unchanged
             for finger in self.fingers.values():
                 finger.flip_horizontal(self.wrist.x)
+            self.flipped = True
+        else:
+            self.flipped = False
 
 
 class Finger:
