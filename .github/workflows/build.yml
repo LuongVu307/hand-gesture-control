@@ -1,0 +1,55 @@
+name: Build and Release on Tag
+
+on:
+  push:
+    tags:
+      - 'v*'
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      - name: Discover mediapipe data paths
+        id: mediapipe_paths
+        shell: python
+        run: |
+          import mediapipe
+          import os
+          hand = os.path.join(mediapipe.__path__[0], 'modules', 'hand_landmark')
+          palm = os.path.join(mediapipe.__path__[0], 'modules', 'palm_detection')
+          print(f"::set-output name=hand::{hand}")
+          print(f"::set-output name=palm::{palm}")
+
+      - name: Build executable with PyInstaller
+        run: |
+          pyinstaller --onefile --name GestCon ^
+            --add-data "${{ steps.mediapipe_paths.outputs.hand }};mediapipe\\modules\\hand_landmark" ^
+            --add-data "${{ steps.mediapipe_paths.outputs.palm }};mediapipe\\modules\\palm_detection" ^
+            src\\__main__.py
+
+      - name: List build output
+        run: dir dist
+
+      - name: Create GitHub Release and upload artifact
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/GestCon.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
