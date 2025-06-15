@@ -1,7 +1,7 @@
-from .hand_detector import HandDetector
-from .gesture_recognition import GestureDetector
-from .command_executor import CommandExecutor
-from .camera import Camera
+from src.hand_detector import HandDetector
+from src.gesture_recognition import GestureDetector
+from src.command_executor import CommandExecutor
+from src.camera import Camera
 
 
 def main():
