@@ -39,10 +39,11 @@ jobs:
 
       - name: Build executable with PyInstaller
         run: |
-          pyinstaller --onefile --name GestCon ^
-            --add-data "${{ steps.mediapipe_paths.outputs.hand }};mediapipe\\modules\\hand_landmark" ^
-            --add-data "${{ steps.mediapipe_paths.outputs.palm }};mediapipe\\modules\\palm_detection" ^
-            src\\__main__.py
+          pyinstaller --onefile --name GestCon `
+          --add-data "C:\hostedtoolcache\windows\Python\3.10.11\x64\lib\site-packages\mediapipe\modules\hand_landmark;mediapipe\modules\hand_landmark" `
+          --add-data "C:\hostedtoolcache\windows\Python\3.10.11\x64\lib\site-packages\mediapipe\modules\palm_detection;mediapipe\modules\palm_detection" `
+          src\__main__.py
+
 
       - name: List build output
         run: dir dist
