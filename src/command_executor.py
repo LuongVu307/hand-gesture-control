@@ -1,5 +1,5 @@
 import pyautogui
-from .utils import is_audio_playing
+from src.utils import is_audio_playing
 
 
 class CommandExecutor:
