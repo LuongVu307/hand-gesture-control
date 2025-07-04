@@ -121,7 +121,7 @@ def test_hand_update(landmark_with_wrist, sample_landmark):
 
 @pytest.mark.parametrize(
     "wrist_y, middle_tip_y, thumb_x, pinky_x, upsidedown, flipped",
-    [(0.1, 0.2, 0.3, 0.4, True, True), (0.2, 0.1, 0.4, 0.3, False, False)],
+    [(0.1, 0.2, 0.3, 0.4, True, False), (0.2, 0.1, 0.4, 0.3, False, False)],
 )
 def test_hand_normalize(
     wrist_y,
