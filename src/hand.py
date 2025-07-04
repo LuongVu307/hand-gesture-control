@@ -9,7 +9,7 @@ class Hand:
             Finger("pinky"),
         )
         self.wrist = None
-        self.flipped, self.upsidedown = True, True
+        self.flipped, self.upsidedown = False, False
 
     @property
     def fingers(self):
@@ -38,25 +38,36 @@ class Hand:
     # Ex: fingers are always in the position thumb->index->middle->ring->pinky
     # or reversed
     def normalize(self):
-        # Flip vertically if wrist is higher than middle finger
-        # (The hand is upside down)
-        if self.wrist.y < self.middle.tip.y:
-            # wrist.y unchanged
-            for finger in self.fingers.values():
-                finger.flip_vertical(self.wrist.y)
-            self.upsidedown = True
-        else:
-            self.upsidedown = False
-
         # Flip horizontally if thumb is to the left of pinky
         # The palm is not facing the camera)
-        if self.thumb.x < self.pinky.x:
-            # wrist.x unchanged
+        thumb_less_pinky = self.thumb.x < self.pinky.x 
+        wrist_less_middle = self.wrist.y < self.middle.tip.y
+
+        if thumb_less_pinky and wrist_less_middle:
+            self.flipped = False
+            self.upsidedown = True
+        elif not thumb_less_pinky and not wrist_less_middle:
+            self.flipped = False
+            self.upsidedown = False
+        elif not thumb_less_pinky and wrist_less_middle:
+            self.flipped = True
+            self.upsidedown = True
+        elif thumb_less_pinky and not wrist_less_middle:
+            self.flipped = True
+            self.upsidedown = False
+
+        if self.flipped:
             for finger in self.fingers.values():
                 finger.flip_horizontal(self.wrist.x)
-            self.flipped = True
-        else:
-            self.flipped = False
+
+
+
+        # Flip vertically if wrist is higher than middle finger
+        # (The hand is upside down)
+        if self.upsidedown:
+            for finger in self.fingers.values():
+                finger.flip_vertical(self.wrist.y)
+
 
 
 class Finger:
