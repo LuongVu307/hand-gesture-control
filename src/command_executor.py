@@ -19,5 +19,9 @@ class CommandExecutor:
             if self.playing is True:
                 pyautogui.press("playpause")
                 self.playing = False
+        elif command_name == "increase":
+            pyautogui.press("volumeup")
+        elif command_name == "decrease":
+            pyautogui.press("volumedown")
         else:
             print(f"Unknown command: {command_name}")

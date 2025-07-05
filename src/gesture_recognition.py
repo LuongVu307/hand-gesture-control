@@ -1,18 +1,34 @@
+import re 
+
 from src.hand import Hand
 
 
 class GestureDetector:
     def __init__(self):
         self.hand = Hand()
-        self.map = {"open" + "close" * 4: "close", "open" * 5: "open"}
-
+        self.map = {"open" + "close"*4 + "..": "close", 
+                    "open" * 5 + "..": "open",
+                    "open"*2 + "close"*3 + ".0": "increase",
+                    "open"*2 + "close"*3 + ".1": "decrease",
+                    }
+        
     def update(self, hand_landmarks):
         if hand_landmarks is not None:
             self.hand.update(hand_landmarks[0])
 
     def map_hand_state(self):
-        current_state = self.get_hand_state()
-        return self.map[current_state] if current_state in self.map else None
+        current_state, flipped, upsidedown = self.get_hand_state()
+        # print(flipped, upsidedown)
+        flipped, upsidedown = map(lambda x : "1" if x==True else "0", [flipped, upsidedown])
+        current_state = current_state + flipped + upsidedown
+        # print(current_state)
+        hand_state = None
+        for item in self.map.keys():
+            if re.fullmatch(item, current_state):
+                hand_state = self.map[item]
+                break       
+        # print(hand_state)
+        return hand_state
 
     def get_gesture(self):
         return self.map_hand_state()
@@ -23,4 +39,4 @@ class GestureDetector:
             finger = getattr(self.hand, finger_type)
             states.append(finger.state)
 
-        return "".join(states)
+        return "".join(states), self.hand.flipped, self.hand.upsidedown
