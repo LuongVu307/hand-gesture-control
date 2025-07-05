@@ -6,10 +6,10 @@ from src.hand import Hand
 class GestureDetector:
     def __init__(self):
         self.hand = Hand()
-        self.map = {"open" + "close"*4 + "..": "close", 
-                    "open" * 5 + "..": "open",
-                    "open"*2 + "close"*3 + ".0": "increase",
-                    "open"*2 + "close"*3 + ".1": "decrease",
+        self.map = {"10000..": "close", 
+                    "11111..": "open",
+                    "11000.0": "increase",
+                    "11000.1": "decrease",
                     }
         
     def update(self, hand_landmarks):

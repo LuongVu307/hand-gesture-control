@@ -118,6 +118,6 @@ class Finger:
     @property
     def state(self):
         if self.tip.y < self.base.y:
-            return "open"
+            return "1"
         else:
-            return "close"
+            return "0"
