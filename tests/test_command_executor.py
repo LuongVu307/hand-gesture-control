@@ -37,6 +37,24 @@ def test_execute_command_open_when_playing(mocker):
     mock_press.assert_called_once_with("playpause")
     assert executor.playing is False
 
+def test_execute_command_increase_volume(mocker):
+    mock_press = mocker.patch("pyautogui.press")
+
+    executor = CommandExecutor()
+
+    executor.execute_command("increase")
+
+    mock_press.assert_called_once_with("volumeup")
+
+def test_execute_command_decrease_volume(mocker):
+    mock_press = mocker.patch("pyautogui.press")
+
+    executor = CommandExecutor()
+
+    executor.execute_command("decrease")
+
+    mock_press.assert_called_once_with("volumedown")
+
 def test_execute_command_open_when_not_playing(mocker):
     mock_press = mocker.patch("pyautogui.press")
 
