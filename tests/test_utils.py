@@ -1,7 +1,8 @@
 import pytest
 from src.utils import is_audio_playing
+import sys
 
-
+@pytest.mark.skipif(sys.platform != "win32", reason="pycaw only works on Windows")
 def test_is_audio_playing_returns_true(mocker):
     # Arrange: Create a mock session with State = 1 (active) and a Process
     mock_session = mocker.MagicMock()
@@ -21,7 +22,7 @@ def test_is_audio_playing_returns_true(mocker):
     assert result is True
     mock_get_sessions.assert_called_once()
 
-
+@pytest.mark.skipif(sys.platform != "win32", reason="pycaw only works on Windows")
 def test_is_audio_playing_returns_false_when_no_active_sessions(mocker):
     # Arrange: Create a mock session with State != 1 (inactive)
     mock_session = mocker.MagicMock()
@@ -41,7 +42,7 @@ def test_is_audio_playing_returns_false_when_no_active_sessions(mocker):
     assert result is False
     mock_get_sessions.assert_called_once()
 
-
+@pytest.mark.skipif(sys.platform != "win32", reason="pycaw only works on Windows")
 def test_is_audio_playing_returns_false_when_no_sessions(mocker):
     # Arrange: Patch GetAllSessions to return an empty list
     mock_get_sessions = mocker.patch(
