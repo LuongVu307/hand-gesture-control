@@ -1,10 +1,9 @@
 import pyautogui
-from src.utils import is_audio_playing
 
 
 class CommandExecutor:
     def __init__(self):
-        self.playing = is_audio_playing()
+        self.playing = False
 
     def execute_command(self, command_name):
         """
