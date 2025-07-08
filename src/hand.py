@@ -46,27 +46,31 @@ class Hand:
         if thumb_less_pinky and wrist_less_middle:
             self.flipped = False
             self.upsidedown = True
+
+            for finger in self.fingers.values():
+                finger.flip_horizontal(self.wrist.x)
+
+            for finger in self.fingers.values():
+                finger.flip_vertical(self.wrist.y)
+
+
         elif not thumb_less_pinky and not wrist_less_middle:
             self.flipped = False
             self.upsidedown = False
         elif not thumb_less_pinky and wrist_less_middle:
             self.flipped = True
             self.upsidedown = True
+
+            for finger in self.fingers.values():
+                finger.flip_vertical(self.wrist.y)
+
         elif thumb_less_pinky and not wrist_less_middle:
             self.flipped = True
             self.upsidedown = False
 
-        if self.flipped:
             for finger in self.fingers.values():
                 finger.flip_horizontal(self.wrist.x)
 
-
-
-        # Flip vertically if wrist is higher than middle finger
-        # (The hand is upside down)
-        if self.upsidedown:
-            for finger in self.fingers.values():
-                finger.flip_vertical(self.wrist.y)
 
 
 
