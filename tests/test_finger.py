@@ -90,9 +90,9 @@ def test_finger_update(finger, mocker):
 @pytest.mark.parametrize(
     "tip_y, base_y, exp_val",
     [
-        (0.2, 0.4, "open"),
-        (0.0, 0.0, "close"),
-        (0.9, 0.3, "close"),
+        (0.2, 0.4, "1"),
+        (0.0, 0.0, "0"),
+        (0.9, 0.3, "0"),
     ],
 )
 def test_finger_state(tip_y, base_y, exp_val, mocker):

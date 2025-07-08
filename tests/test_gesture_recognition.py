@@ -64,7 +64,7 @@ def test_map_hand_state_open(mocker, mock_hand_class):
 
     # Set all finger states to "open"
     for finger in ["thumb", "index", "middle", "ring", "pinky"]:
-        setattr(getattr(mock_hand_class.return_value, finger), "state", "open")
+        setattr(getattr(mock_hand_class.return_value, finger), "state", "1")
 
     gesture = detector.get_gesture()
     assert gesture == "open"
@@ -74,9 +74,10 @@ def test_map_hand_state_close(mocker, mock_hand_class):
     detector = GestureDetector()
 
     # Set thumb open and others close
-    setattr(getattr(mock_hand_class.return_value, "thumb"), "state", "open")
+    setattr(getattr(mock_hand_class.return_value, "thumb"), "state", "1")
     for finger in ["index", "middle", "ring", "pinky"]:
-        setattr(getattr(mock_hand_class.return_value, finger), "state", "close")
+        setattr(getattr(mock_hand_class.return_value, finger), "state", "0")
+
 
     gesture = detector.get_gesture()
     assert gesture == "close"
