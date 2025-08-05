@@ -10,3 +10,5 @@ build/
 **.spec
 
 .ipynb_checkpoints
+
+src/models/data.csv
