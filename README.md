@@ -2,7 +2,7 @@
 
 ### An open-source Python tool that enables functional shortcut-key control through hand gestures.
 
-<img src="assets/demo.gif" alt="Demo GIF" width="600"/>
+<img src="assets/Demo.gif" alt="Demo GIF" width="600"/>
 
 
 ## Table of Contents
