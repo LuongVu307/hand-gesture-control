@@ -42,7 +42,7 @@ def test_execute_command_increase_volume(mocker):
 
     executor = CommandExecutor()
 
-    executor.execute_command("increase")
+    executor.execute_command("point_up")
 
     mock_press.assert_called_once_with("volumeup")
 
@@ -51,7 +51,7 @@ def test_execute_command_decrease_volume(mocker):
 
     executor = CommandExecutor()
 
-    executor.execute_command("decrease")
+    executor.execute_command("point_down")
 
     mock_press.assert_called_once_with("volumedown")
 

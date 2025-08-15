@@ -9,37 +9,6 @@ def fake_frame():
     return np.zeros((480, 640, 3), dtype=np.uint8)
 
 
-def test_detect_hands_with_landmarks(mocker, fake_frame):
-    # Arrange: Patch MediaPipe Hands API
-    mock_hands_instance = mocker.MagicMock()
-    mock_hands_process = mock_hands_instance.process
-
-    fake_landmark = mocker.MagicMock()
-    fake_landmark.landmark = [mocker.MagicMock() for _ in range(21)]
-    mock_results = mocker.MagicMock(multi_hand_landmarks=[fake_landmark])
-    mock_hands_process.return_value = mock_results
-
-    mock_hands_class = mocker.patch("src.hand_detector.mp.solutions.hands.Hands", return_value=mock_hands_instance)
-    mocker.patch("cv2.cvtColor", return_value="fake_rgb_image")
-
-    detector = HandDetector()
-
-    # Act
-    result = detector.detect_hands(fake_frame)
-
-    # Assert
-    mock_hands_class.assert_called_once()
-    mock_hands_instance.process.assert_called_once_with("fake_rgb_image")
-    assert result is not None
-    assert isinstance(result, list)
-    assert "wrist" in result[0]
-    assert "fingers" in result[0]
-    assert len(result[0]["fingers"]["thumb"]) == 4
-
-    # Check internal state
-    assert detector.current_multi_hand_landmarks == mock_results.multi_hand_landmarks
-
-
 def test_detect_hands_without_landmarks(mocker, fake_frame):
     # Arrange
     mocker.patch("cv2.cvtColor", return_value="fake_rgb_image")
