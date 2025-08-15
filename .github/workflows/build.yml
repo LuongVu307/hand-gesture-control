@@ -42,6 +42,10 @@ jobs:
           pyinstaller --onefile --name GestCon `
           --add-data "C:\hostedtoolcache\windows\Python\3.10.11\x64\lib\site-packages\mediapipe\modules\hand_landmark;mediapipe\modules\hand_landmark" `
           --add-data "C:\hostedtoolcache\windows\Python\3.10.11\x64\lib\site-packages\mediapipe\modules\palm_detection;mediapipe\modules\palm_detection" `
+          --add-data "src\models\model.pth;src\models" `
+          --add-data "src\models\pipeline.pt;src\models" `
+          --add-data "src\models\prototypes.npy;src\models" `
+          --add-data "src\models\labels.npy;src\models" `
           src\__main__.py
 
 
