@@ -2,7 +2,7 @@
 
 This document outlines the design and plan for the new model that will be integrated into *GestCon* v2.0.0. It covers the problem it solves, data considerations, model architecture, training, evaluation, and deployment strategy.
 
-- **Date:** August 9, 2025
+- **Date:** August 15, 2025
 - **Author:** Gia Luong Vu
 - **Version:** v2.0.0-alpha
 
@@ -94,4 +94,4 @@ Thus, the model is structured into two main components:
 
 - The Embedding Network in this version only contains 2 Dense Layers, with a Triplet Loss used to train the Network.
 
-- The classification head used is a K-Nearest Neighbor model.
+- The classification head used is a Cosine Similarity model.
