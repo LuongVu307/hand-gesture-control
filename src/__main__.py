@@ -2,6 +2,8 @@ from src.hand_detector import HandDetector
 from src.gesture_recognition import GestureDetector
 from src.command_executor import CommandExecutor
 from src.camera import Camera
+from src.models.models import HandFeature, HandNormalizer, LandmarkEmbedding
+
 
 
 def main():
@@ -21,15 +23,14 @@ def main():
         landmarks = hand_detector.detect_hands(frame)
 
         if landmarks:
-            gesture_detector.update(landmarks)
-            gesture = gesture_detector.get_gesture()
+            gesture = gesture_detector.get_gesture(landmarks)
             print(f"Gesture detected: {gesture}")
             executor.execute_command(gesture)
 
         frame = hand_detector.draw_hands(frame)
         camera.show("Hand Gesture Control", frame)
 
-        if camera.wait_key(200) == 27:  # ESC to quit
+        if camera.wait_key(50) == 27:  # ESC to quit
             break
 
         frame_count += 1

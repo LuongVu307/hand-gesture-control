@@ -1,5 +1,6 @@
 import cv2
 import mediapipe as mp
+import numpy as np
 
 
 class HandDetector:
@@ -18,26 +19,15 @@ class HandDetector:
         image_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         results = self.hands.process(image_rgb)
 
-        self.current_multi_hand_landmarks = (
-            results.multi_hand_landmarks
-        )  # save for drawing
+        self.current_multi_hand_landmarks = results.multi_hand_landmarks  # save for drawing
 
         if results.multi_hand_landmarks:
             hands_landmarks = []
             for hand_landmarks in results.multi_hand_landmarks:
-                landmarks = hand_landmarks.landmark
-                hand_dict = {
-                    "wrist": landmarks[0],
-                    "fingers": {
-                        "thumb": landmarks[1:5],
-                        "index": landmarks[5:9],
-                        "middle": landmarks[9:13],
-                        "ring": landmarks[13:17],
-                        "pinky": landmarks[17:21],
-                    },
-                }
-                hands_landmarks.append(hand_dict)
-            return hands_landmarks
+                # Extract 21 (x, y, z) points
+                coords = np.array([[lm.x, lm.y, lm.z] for lm in hand_landmarks.landmark], dtype=np.float32)
+                hands_landmarks.append(coords)  # shape: (21, 3)
+            return hands_landmarks  # list of arrays, one per detected hand
         return None
 
     def draw_hands(self, frame):

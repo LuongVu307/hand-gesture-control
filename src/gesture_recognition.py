@@ -1,42 +1,23 @@
-import re 
+import numpy as np
+import torch
 
-from src.hand import Hand
-
+from src.models.models import LandmarkEmbedding, converter
 
 class GestureDetector:
     def __init__(self):
-        self.hand = Hand()
-        self.map = {"10000..": "close", 
-                    "11111..": "open",
-                    "11000.0": "increase",
-                    "11000.1": "decrease",
-                    }
         
-    def update(self, hand_landmarks):
-        if hand_landmarks is not None:
-            self.hand.update(hand_landmarks[0])
+        self.model = LandmarkEmbedding(288)
+        self.model.load_state_dict(torch.load('src/models/model.pth'))
+        self.pipeline = torch.load("src/models/pipeline.pt")
 
-    def map_hand_state(self):
-        current_state, flipped, upsidedown = self.get_hand_state()
-        # print(flipped, upsidedown)
-        flipped, upsidedown = map(lambda x : "1" if x==True else "0", [flipped, upsidedown])
-        current_state = current_state + flipped + upsidedown
-        # print(current_state)
-        hand_state = None
-        for item in self.map.keys():
-            if re.fullmatch(item, current_state):
-                hand_state = self.map[item]
-                break       
-        # print(hand_state)
-        return hand_state
+        self.prototype, self.label = torch.tensor(np.load("src/models/prototypes.npy")), np.load("src/models/labels.npy")
+        
 
-    def get_gesture(self):
-        return self.map_hand_state()
+    def get_gesture(self, landmark):
+        landmark = landmark[0]
+        processed = torch.tensor(np.expand_dims(self.pipeline(landmark), axis=0))
 
-    def get_hand_state(self):
-        states = []
-        for finger_type in ["thumb", "index", "middle", "ring", "pinky"]:
-            finger = getattr(self.hand, finger_type)
-            states.append(finger.state)
+        output = self.model(processed)
 
-        return "".join(states), self.hand.flipped, self.hand.upsidedown
+        return converter(output, self.prototype, self.label)
+
